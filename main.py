@@ -17,10 +17,12 @@ orientation = afficherGraphe(exemple)
 # 2.2 Dessin d'un chemin
 afficherChemin(exemple, 0, 4, orientation)
 
-# 3.1 Grahes avec 50% de flèches
-graphe(5, 1, 10)
+# 3.1 Graphes avec 50% de flèches
+print(graphe(5, 1, 10))
 
 print("\n")
 
-# 3.2 Grahes avec une proportion variables p de flèches
+# 3.2 Graphes avec une proportion variables p de flèches
 graphe2(5, 0.5, 1, 10)
+
+# 4.1 Codage de l'algorithme de Dijkstra

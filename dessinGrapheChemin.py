@@ -11,7 +11,7 @@ def afficherGraphe(matrice):
     G = nx.from_numpy_array(matrice_np)
 
     # Orientation du graphe
-    pos = nx.spring_layout(G)
+    pos =  nx.spring_layout(G)
 
     # Visualisation du graphe
     nx.draw(G, pos, with_labels=True)

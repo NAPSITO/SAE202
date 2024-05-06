@@ -22,7 +22,7 @@ pip install networkx matplotlib
 1. Exécutez le script Python `main.py` :
 
 ```bash
-python dessinGrapheChemin.py
+python main.py
 ```
 
 Ce script effectue les étapes suivantes :

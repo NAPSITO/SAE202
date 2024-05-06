@@ -1,7 +1,5 @@
-import numpy as np
-import networkx as nx
-import matplotlib.pyplot as plt
-import dessinGrapheChemin
+from generationAleatoire import *
+from dessinGrapheChemin import *
 
 # Matrice
 exemple = [
@@ -13,6 +11,11 @@ exemple = [
     [0, 0, 0, 2, 1, 0]
 ]
 
-dessinGrapheChemin.afficherGraphe(exemple)
+# 2.1 Dessin d'un graphe
+orientation = afficherGraphe(exemple)
 
-dessinGrapheChemin.afficherChemin(exemple, 0, 3)
+# 2.2 Dessin d'un chemin
+afficherChemin(exemple, 0, 4, orientation)
+
+# 3.1 Grahes avec 50% de flèches
+graphe(5, 1, 10)

@@ -21,11 +21,6 @@ def Dijkstra(M, origine, cible):
                 distance_min = dist[i]
                 noeud_actuel = i
 
-        # Vérification si la cible est atteignable
-        if distance_min == np.inf:
-            print("Il n'y a pas de chemin valide de l'origine à la cible.")
-            return np.inf, []
-
         noeud_visite.append(noeud_actuel)
 
         for j in range(taille_graphe):
@@ -48,6 +43,12 @@ def Dijkstra(M, origine, cible):
 # Génération d'une matrice aléatoire
 M = graphe2(6, 1, 0, 3)
 print(M)
+# M = [[1, 0, 0, 0, 1, 0],
+#      [1, 1, 2, 0, 2, 2],
+#      [1, 2, 1, 2, 2, 2],
+#      [2, 2, 0, 1, 0, 1],
+#      [2, 1, 0, 2, 2, 1],
+#      [0, 2, 1, 2, 2, 2]]
 
 # Exécution de l'algorithme de Dijkstra
 dist, chemin_plus_court = Dijkstra(M, 0, 5)

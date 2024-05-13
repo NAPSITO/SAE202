@@ -1,7 +1,7 @@
 import numpy as np
 
 from dessinGrapheChemin import afficherGraphe, afficherChemin
-from generationAleatoire import graphe
+from generationAleatoire import graphe, graphe2
 
 
 def Dijkstra(M, origine, cible):
@@ -20,6 +20,11 @@ def Dijkstra(M, origine, cible):
             if i not in noeud_visite and dist[i] < distance_min:
                 distance_min = dist[i]
                 noeud_actuel = i
+
+        # Vérification si la cible est atteignable
+        if distance_min == np.inf:
+            print("Il n'y a pas de chemin valide de l'origine à la cible.")
+            return np.inf, []
 
         noeud_visite.append(noeud_actuel)
 
@@ -40,25 +45,16 @@ def Dijkstra(M, origine, cible):
     return dist[-1], chemin_plus_court
 
 
-# Exemple d'utilisation
-Infini = np.inf
-
-M = [
-    [Infini, Infini, Infini, Infini, 103, Infini, 71],
-    [Infini, Infini, Infini, 122, Infini, 98, Infini],
-    [Infini, Infini, Infini, 118, 125, Infini, Infini],
-    [Infini, 122, 118, Infini, Infini, Infini, Infini],
-    [103, Infini, 125, Infini, Infini, 46, Infini],
-    [Infini, Infini, Infini, Infini, 46, Infini, 118],
-    [71, 98, Infini, Infini, Infini, 118, Infini]
-]
+# Génération d'une matrice aléatoire
+M = graphe2(6, 1, 0, 3)
+print(M)
 
 # Exécution de l'algorithme de Dijkstra
-paths = Dijkstra(M, 0, 5)
+dist, chemin_plus_court = Dijkstra(M, 0, 5)
 
 # Affichage des résultats
-for path in paths:
-    print(path)
+print(f"Distance totale : {dist}")
+print(f"Chemin le plus court : {chemin_plus_court}")
 
-orientation = afficherGraphe(M)
+# orientation = afficherGraphe(M)
 # afficherChemin(M, d, 4, orientation)

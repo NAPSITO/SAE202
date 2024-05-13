@@ -49,4 +49,4 @@ def graphe2(n, p, a, b):
     # Conversion des valeurs autres que float('inf') en entiers
     matrice[matrice != float('inf')] = matrice[matrice != float('inf')].astype(np.int64)
 
-    print(matrice)
+    return matrice

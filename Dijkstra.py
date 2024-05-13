@@ -41,21 +41,17 @@ def Dijkstra(M, origine, cible):
 
 
 # Génération d'une matrice aléatoire
-M = graphe2(6, 1, 0, 3)
+taille = 6
+depart = 0
+M = graphe2(taille, 1, 0, 3)
 print(M)
-# M = [[1, 0, 0, 0, 1, 0],
-#      [1, 1, 2, 0, 2, 2],
-#      [1, 2, 1, 2, 2, 2],
-#      [2, 2, 0, 1, 0, 1],
-#      [2, 1, 0, 2, 2, 1],
-#      [0, 2, 1, 2, 2, 2]]
 
 # Exécution de l'algorithme de Dijkstra
-dist, chemin_plus_court = Dijkstra(M, 0, 5)
+dist, chemin_plus_court = Dijkstra(M, depart, taille - 1)
 
 # Affichage des résultats
 print(f"Distance totale : {dist}")
 print(f"Chemin le plus court : {chemin_plus_court}")
 
-# orientation = afficherGraphe(M)
-# afficherChemin(M, d, 4, orientation)
+orientation = afficherGraphe(M)
+afficherChemin(M, depart, taille - 1, orientation)

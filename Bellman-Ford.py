@@ -1,81 +1,61 @@
-import numpy as np
-from generationAleatoire import *
-
-def BellmanFord(M, d):
-    n = len(M)
+def bellman_ford(M, start, end):
+    num_vertices = len(M)
     # Initialisation des distances
-    distances = [float('inf')] * n
+    distances = [float('inf')] * num_vertices
     distances[start] = 0
 
+    # Initialisation des itinéraires
+    predecessors = [-1] * num_vertices
+
     # Itération sur chaque nœud pour mettre à jour les distances
-    for _ in range(n - 1):
-        for node in range(n):
-            for neighbor in range(n):
+    for _ in range(num_vertices - 1):
+        for node in range(num_vertices):
+            for neighbor in range(num_vertices):
                 if M[node][neighbor] != 0:
                     if distances[node] + M[node][neighbor] < distances[neighbor]:
                         distances[neighbor] = distances[node] + M[node][neighbor]
+                        predecessors[neighbor] = node
 
     # Vérification de la présence de cycles négatifs
-    for node in range(n):
-        for neighbor in range(n):
+    for node in range(num_vertices):
+        for neighbor in range(num_vertices):
             if M[node][neighbor] != 0:
                 if distances[node] + M[node][neighbor] < distances[neighbor]:
-                    return "Il existe un cycle négatif dans le graphe"
-
-    return distances
+                    return "Sommet joignable depuis {} par un chemin dans le graphe, mais pas de plus court chemin (présence d'un cycle négatif)".format(start)
 
     # Vérification de la connectivité du sommet de départ
     if all(distance == float('inf') for distance in distances):
-        return "Sommet non joignable depuis {} par un chemin dans le graphe".format(start)
+        return "Sommet non-joignable depuis {} par un chemin dans le graphe".format(start)
 
-        # Affichage du graphe avec les distances mises à jour
-        G = nx.DiGraph()
-        for i in range(num_vertices):
-            for j in range(num_vertices):
-                if M[i][j] != 0:
-                    G.add_edge(i, j, weight=M[i][j])
+    # Vérification de la connectivité du sommet d'arrivée
+    if distances[end] == float('inf'):
+        return "Sommet d'arrivée non-joignable depuis {} par un chemin dans le graphe".format(start)
 
-        pos = nx.spring_layout(G)  # Position des nœuds
-        nx.draw(G, pos, with_labels=True, node_size=700, node_color="skyblue", font_size=10,
-                font_weight="bold")  # Dessine le graphe
-        labels = nx.get_edge_attributes(G, 'weight')
-        nx.draw_networkx_edge_labels(G, pos, edge_labels=labels)  # Ajoute les labels pour les poids des arêtes
+    # Reconstruction de l'itinéraire
+    path = []
+    current = end
+    while current != -1:
+        path.insert(0, current)
+        current = predecessors[current]
 
-        plt.title("Graphe avec distances mises à jour")
-        plt.show()
-
-        return distances
+    return distances[end], path
 
 # Exemple d'utilisation
 matrice = [
     [0, 4, 0, 0, 0],
     [-1, 0, 3, 2, 2],
-    [0, 0, 0, 2, 0],
+    [0, 0, 0, 0, 0],
     [0, 1, 5, 0, 0],
     [0, 0, -3, 0, 0]
 ]
 
 start = 0
-result = BellmanFord(matrice, start)
+end = 4
+result = bellman_ford(matrice, start, end)
 
-if isinstance(result, str):
+if isinstance(result, tuple):
+    distance, path = result
+    print("Longueur du plus court chemin de", start, "à", end, ":", distance)
+    print("Itinéraire :", path)
+else:
     print(result)
-else:
-    print("Plus courts chemins depuis le sommet", start)
-    for node, distance in enumerate(result):
-        print("Distance de", start, "à", node, ":", distance)
-
-matrice2=graphe2(5,0.5,5,6)
-
-result1 = BellmanFord(matrice2, start)
-
-if isinstance(result1, str):
-    print(result1)
-else:
-    print("Plus courts chemins depuis le sommet", start)
-    for node, distance in enumerate(result1):
-        print("Distance de", start, "à", node, ":", distance)
-
-# print(paths)
-# orientation = afficherGraphe(M)
-# afficherChemin(M, d, 4, orientation)

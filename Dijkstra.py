@@ -1,72 +1,61 @@
 import numpy as np
 
 from dessinGrapheChemin import afficherGraphe, afficherChemin
-from generationAleatoire import graphe
+from generationAleatoire import graphe, graphe2
 
 
-def Dijkstra(M, d):
-    # Initialisation
-    n = len(M)  # Nombre de sommets
-    dist = {i: float('inf') for i in range(n)}  # Distance initiale à l'infini
-    dist[d] = 0  # Distance du sommet source à lui-même est 0
-    pred = {i: None for i in range(n)}  # Prédécesseur initial à None
-    dist[d] = 0  # Distance du sommet source à lui-même est 0
-    pred[d] = d  # Prédécesseur du sommet source est lui-même
-    A = set([d])  # Ensemble des sommets déjà traités
+def Dijkstra(M, origine, cible):
+    # Initialisation des dictionnaires
+    taille_graphe = len(M)
+    dist = [np.inf] * taille_graphe
+    pred = [None] * taille_graphe
 
-    while len(A) < n:  # Tant que tous les sommets n'ont pas été traités
-        # Sélection du sommet avec la distance minimale hors de A
-        s = min((s for s in range(n) if s not in A), key=lambda s: dist[s])
-        A.add(s)  # Ajout de s dans A
+    dist[origine] = 0
+    noeud_visite = [origine]
+    noeud_actuel = origine
 
-        # Pour tous les successeurs t de s hors de A
-        for t, poids in enumerate(M[s]):
-            if poids > 0 and t not in A:  # Si le poids est positif et t n'a pas été traité
-                # Modification des variables pour t
-                if dist[s] + poids < dist[t]:
-                    dist[t] = dist[s] + poids
-                    pred[t] = s
+    while cible not in noeud_visite:
+        distance_min = np.inf
+        for i in range(taille_graphe):
+            if i not in noeud_visite and dist[i] < distance_min:
+                distance_min = dist[i]
+                noeud_actuel = i
 
-    # Construction des chemins
-    paths = {}
-    for v in range(n):
-        if v != d:
-            if pred[v] is not None:
-                # Construction du chemin
-                path = [v]
-                while pred[v] is not None:
-                    path.append(pred[v])
-                    v = pred[v]
-                path.reverse()
-                paths[v] = (dist[v], path)
-            else:
-                paths[v] = "sommet non joignable à d par un chemin dans le graphe G"
+        noeud_visite.append(noeud_actuel)
 
-    return paths
+        for j in range(taille_graphe):
+            if j not in noeud_visite and M[noeud_actuel][j] != np.inf:
+                if dist[noeud_actuel] + M[noeud_actuel][j] < dist[j]:
+                    dist[j] = dist[noeud_actuel] + M[noeud_actuel][j]
+                    pred[j] = noeud_actuel
+
+    nouvelle_cible = cible
+    chemin_plus_court = [nouvelle_cible]
+    while pred[nouvelle_cible] is not None:
+        chemin_plus_court.append(pred[nouvelle_cible])
+        nouvelle_cible = pred[nouvelle_cible]
+
+    chemin_plus_court.reverse()
+
+    return dist[-1], chemin_plus_court
 
 
-Infini = np.inf
+# Génération d'une matrice aléatoire
+M = graphe2(6, 1, 0, 3)
+print(M)
+# M = [[1, 0, 0, 0, 1, 0],
+#      [1, 1, 2, 0, 2, 2],
+#      [1, 2, 1, 2, 2, 2],
+#      [2, 2, 0, 1, 0, 1],
+#      [2, 1, 0, 2, 2, 1],
+#      [0, 2, 1, 2, 2, 2]]
 
-M = [
-    [Infini, Infini, Infini, Infini, 103, Infini, 71],
-    [Infini, Infini, Infini, 122, Infini, 98, Infini],
-    [Infini, Infini, Infini, 118, 125, Infini, Infini],
-    [Infini, 122, 118, Infini, Infini, Infini, Infini],
-    [103, Infini, 125, Infini, Infini, 46, Infini],
-    [Infini, Infini, Infini, Infini, 46, Infini, 118],
-    [71, 98, Infini, Infini, Infini, 118, Infini]
-]
+# Exécution de l'algorithme de Dijkstra
+dist, chemin_plus_court = Dijkstra(M, 0, 5)
 
-d = 0  # Sommet source
-paths = Dijkstra(M, d)
+# Affichage des résultats
+print(f"Distance totale : {dist}")
+print(f"Chemin le plus court : {chemin_plus_court}")
 
-# Collecte des chemins dans une liste
-for v, path in paths.items():
-    if isinstance(path, tuple):
-        print(f"Chemin de {d} à {v}: Longueur = {path[0]}, Chemin = {path[1]}")
-    else:
-        print(f"{v}: {path}")
-
-# print(paths)
 # orientation = afficherGraphe(M)
 # afficherChemin(M, d, 4, orientation)

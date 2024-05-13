@@ -23,6 +23,6 @@ print(graphe(5, 1, 10))
 print("\n")
 
 # 3.2 Graphes avec une proportion variables p de flèches
-graphe2(5, 0.5, 1, 10)
+print(graphe2(5, 0.5, 1, 10))
 
 # 4.1 Codage de l'algorithme de Dijkstra

@@ -14,10 +14,10 @@ exemple = [
 ]
 
 # 2.1 Dessin d'un graphe
-orientation = afficherGraphe(exemple)
+orientation = afficherGraphe(exemple, "2.1 Dessin d'un graphe")
 
 # 2.2 Dessin d'un chemin
-afficherChemin(exemple, 0, 4, orientation)
+afficherChemin(exemple, 0, 4, orientation, "2.2 Dessin d'un chemin")
 
 # 3.1 Graphes avec 50% de flèches
 print(graphe(5, 1, 10))
@@ -40,8 +40,8 @@ dist, chemin_plus_court = Dijkstra(M, depart, taille - 1)
 print(f"Distance totale : {dist}")
 print(f"Chemin le plus court : {chemin_plus_court}")
 
-orientation = afficherGraphe(M)
-afficherChemin(M, depart, taille - 1, orientation)
+orientation = afficherGraphe(M, "4.1 Codage de l'algorithme de Dijkstra")
+afficherChemin(M, depart, taille - 1, orientation, "4.1 Codage de l'algorithme de Dijkstra")
 
 print("\n")
 
@@ -58,7 +58,7 @@ if isinstance(result, tuple):
     print("Distance totale :", distance)
     print("Chemin le plus court :", path)
 
-    orientation = afficherGraphe(M)
-    afficherChemin(M, depart, taille - 1, orientation)
+    orientation = afficherGraphe(M, "4.2 Codage de l'algorithme de Bellman-Ford")
+    afficherChemin(M, depart, taille - 1, orientation, "4.2 Codage de l'algorithme de Bellman-Ford")
 else:
     print(result)

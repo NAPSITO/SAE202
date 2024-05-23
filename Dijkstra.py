@@ -1,8 +1,5 @@
 import numpy as np
 
-from dessinGrapheChemin import afficherGraphe, afficherChemin
-from generationAleatoire import graphe, graphe2
-
 
 def Dijkstra(M, origine, cible):
     # Initialisation des dictionnaires
@@ -38,20 +35,3 @@ def Dijkstra(M, origine, cible):
     chemin_plus_court.reverse()
 
     return dist[-1], chemin_plus_court
-
-
-# Génération d'une matrice aléatoire
-taille = 6
-depart = 0
-M = graphe2(taille, 1, 0, 3)
-print(M)
-
-# Exécution de l'algorithme de Dijkstra
-dist, chemin_plus_court = Dijkstra(M, depart, taille - 1)
-
-# Affichage des résultats
-print(f"Distance totale : {dist}")
-print(f"Chemin le plus court : {chemin_plus_court}")
-
-orientation = afficherGraphe(M)
-afficherChemin(M, depart, taille - 1, orientation)

@@ -1,7 +1,3 @@
-from dessinGrapheChemin import afficherGraphe, afficherChemin
-from generationAleatoire import graphe2
-
-
 def BellmanFord(M, start, end):
     num_vertices = len(M)
     # Initialisation des distances
@@ -25,8 +21,8 @@ def BellmanFord(M, start, end):
         for neighbor in range(num_vertices):
             if M[node][neighbor] != 0:
                 if distances[node] + M[node][neighbor] < distances[neighbor]:
-                    return "Sommet joignable depuis {} par un chemin dans le graphe, mais pas de plus court chemin (présence d'un cycle négatif)".format(
-                        start)
+                    return ("Sommet joignable depuis {} par un chemin dans le graphe, mais pas de plus court chemin ("
+                            "présence d'un cycle négatif)").format(start)
 
     # Vérification de la connectivité du sommet de départ
     if all(distance == float('inf') for distance in distances):
@@ -44,22 +40,3 @@ def BellmanFord(M, start, end):
         current = predecessors[current]
 
     return distances[end], path
-
-
-# Génération d'une matrice aléatoire
-taille = 6
-depart = 0
-M = graphe2(taille, 1, 0, 3)
-print(M)
-
-result = BellmanFord(M, depart, taille - 1)
-
-if isinstance(result, tuple):
-    distance, path = result
-    print("Distance totale :", distance)
-    print("Chemin le plus court :", path)
-
-    orientation = afficherGraphe(M)
-    afficherChemin(M, depart, taille - 1, orientation)
-else:
-    print(result)

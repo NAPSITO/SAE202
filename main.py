@@ -94,14 +94,13 @@ p = 0.5
 a = 1
 b = 10
 temps = round(TempsDij(n, p, a, b), 6)
-print(f"Temps de calcul pour n={n}, p={p}, a={a}, b={b} : {temps} secondes")
+print(f"Temps de calcul pour n={n}, p={p}, a={a}, b={b} : TempsDij = {temps} secondes")
 
-print("\n")
-
-# 6.2 Comparaison et identification des deux fonctions temps
 n = 10
 p = 0.5
 a = 1
 b = 10
 temps = round(TempsBF(n, p, a, b), 6)
-print(f"Temps de calcul pour n={n}, p={p}, a={a}, b={b} : {temps} secondes")
+print(f"Temps de calcul pour n={n}, p={p}, a={a}, b={b} : TempsBF = {temps} secondes")
+
+# 6.2 Comparaison et identification des deux fonctions temps

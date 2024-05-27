@@ -1,4 +1,7 @@
+import random
+
 from BellmanFord import BellmanFord
+from BellmanFordOrder import BellmanFordOrder
 from Dijkstra import Dijkstra
 from dessinGrapheChemin import *
 from generationAleatoire import *
@@ -62,3 +65,21 @@ if isinstance(result, tuple):
     afficherChemin(M, depart, taille - 1, orientation, "4.2 Codage de l'algorithme de Bellman-Ford")
 else:
     print(result)
+
+print("\n")
+
+
+# 5 Influence du choix de la liste ordonnée des flèches pour l'algorithme de Bellman-Ford
+def generate_random_matrix(vertices, edge_prob=0.2):
+    M = [[0 if i == j or random.random() > edge_prob else random.randint(-10, 10) for j in range(vertices)] for i in
+         range(vertices)]
+    return M
+
+
+vertices = 50
+M = generate_random_matrix(vertices)
+start, end = 0, vertices - 1
+
+for order_type in ["arbitraire", "largeur", "longueur"]:
+    result, count = BellmanFordOrder(M, start, end, order_type)
+    print(f"Liste ordonnée : {order_type}, Résultat : {result}, Compteur : {count}")

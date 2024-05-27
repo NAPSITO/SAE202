@@ -1,13 +1,13 @@
-import networkx as nx
-import numpy as np
 import time
 
+import networkx as nx
 
-def TempsBF(n):
-    # Générer aléatoirement une matrice d'adjacence pour un graphe pondéré à poids positifs
-    np.random.seed(0)  # Pour rendre l'exemple reproductible
-    matrix = np.random.randint(1, 10, size=(n, n))
-    np.fill_diagonal(matrix, 0)  # Pas de boucle (poids 0 sur la diagonale)
+from generationAleatoire import graphe2
+
+
+def TempsBF(n, p, a, b):
+    # Utiliser graphe2 pour générer la matrice d'adjacence
+    matrix = graphe2(n, p, a, b)
 
     # Créer un graphe à partir de la matrice d'adjacence
     G = nx.from_numpy_array(matrix, create_using=nx.DiGraph())
@@ -21,9 +21,3 @@ def TempsBF(n):
     elapsed_time = end_time - start_time
 
     return elapsed_time
-
-
-# Exemple d'utilisation
-n = 10
-temps = TempsBF(n)
-print(f"Temps de calcul pour n={n} : {temps} secondes")

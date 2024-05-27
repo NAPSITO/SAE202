@@ -1,11 +1,12 @@
 import random
 
 from BellmanFord import BellmanFord
-from BellmanFordOrder import BellmanFordOrder
+from BellmanFordOrdre import BellmanFordOrder
 from Dijkstra import Dijkstra
 from TempsBF import TempsBF
 from TempsDij import TempsDij
 from dessinGrapheChemin import *
+from forteConnexité import fc
 from generationAleatoire import *
 
 # Matrice
@@ -104,3 +105,21 @@ temps = round(TempsBF(n, p, a, b), 6)
 print(f"Temps de calcul pour n={n}, p={p}, a={a}, b={b} : TempsBF = {temps} secondes")
 
 # 6.2 Comparaison et identification des deux fonctions temps
+n_values = range(2, 201)
+dijkstra_times = [TempsDij(n, p, a, b) for n in n_values]
+bellman_ford_times = [TempsBF(n, p, a, b) for n in n_values]
+
+plt.figure(figsize=(10, 6))
+plt.plot(n_values, dijkstra_times, label='Dijkstra', color='blue')
+plt.plot(n_values, bellman_ford_times, label='Bellman-Ford', color='red')
+plt.xlabel('Nombre de sommets (n)')
+plt.ylabel('Temps de calcul (s)')
+plt.title('Comparaison des temps de calcul : Dijkstra vs Bellman-Ford')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+print("\n")
+
+# 7 Test de forte connexité
+print(fc(exemple))

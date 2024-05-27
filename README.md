@@ -114,3 +114,6 @@ if isinstance(result, tuple):
 else:
     print(result)
 ```
+
+## 5) Influence du choix de la liste ordonnées des flèches pour l'algorithme de Bellman-Ford
+

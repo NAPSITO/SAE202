@@ -1,3 +1,6 @@
+from generationAleatoire import graphe2
+
+
 def fermeture_transitive(M):
     n = len(M)
     fermeture = [row[:] for row in M]
@@ -20,3 +23,14 @@ def fc(M):
                 return False
 
     return True
+
+
+def test_stat_fc(n, p, a, b, nombreTest):
+    nombreConnectés = 0
+
+    for _ in range(nombreTest):
+        matrice = graphe2(n, p, a, b)
+        if fc(matrice):
+            nombreConnectés += 1
+
+    return (nombreConnectés / nombreTest) * 100

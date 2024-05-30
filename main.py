@@ -6,7 +6,7 @@ from Dijkstra import Dijkstra
 from TempsBF import TempsBF
 from TempsDij import TempsDij
 from dessinGrapheChemin import *
-from forteConnexité import fc
+from forteConnexité import fc, test_stat_fc
 from generationAleatoire import *
 
 # Matrice
@@ -122,4 +122,17 @@ plt.show()
 print("\n")
 
 # 7 Test de forte connexité
-print(fc(exemple))
+print("Fortement connexe : ", fc(exemple))
+
+# 8 Forte connexité pour un graphe avec p=50% de flèches
+p = 0.5
+a = 0
+b = 1
+nombreTest = 400
+
+for n in range(10, 100, 10):
+    pourcentage = test_stat_fc(n, p, a, b, nombreTest)
+    print(f"Pour n={n}, {pourcentage}% des graphes sont fortement connexes.")
+    if pourcentage >= 99:
+        print(f"L'affirmation est vraie pour n={n}.")
+        break

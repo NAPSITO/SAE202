@@ -25,12 +25,39 @@ def fc(M):
     return True
 
 
-def test_stat_fc(n, p, a, b, nombreTest):
+def test_stat_fc(n, nombreTest):
     nombreConnectés = 0
 
-    for _ in range(nombreTest):
-        matrice = graphe2(n, p, a, b)
+    for i in range(nombreTest):
+        matrice = graphe2(n, 0.5, 0, 1)
         if fc(matrice):
             nombreConnectés += 1
 
     return (nombreConnectés / nombreTest) * 100
+
+
+def test_stat_fc2(n, p, nombreTests):
+    nombreConnectés = 0
+
+    for i in range(nombreTests):
+        matrice = graphe2(n, p, 0, 1)
+        if fc(matrice):
+            nombreConnectés += 1
+
+    return (nombreConnectés / nombreTests) * 100
+
+
+def seuil(n, nombreTests):
+    bas = 0
+    haut = 1
+    tolerance = 0.01
+
+    while haut - bas > tolerance:
+        p = (haut + bas) / 2
+        percentage = test_stat_fc2(n, p, nombreTests)
+        if percentage >= 99:
+            haut = p
+        else:
+            bas = p
+
+    return (haut + bas) / 2

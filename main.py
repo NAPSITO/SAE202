@@ -1,4 +1,6 @@
 import random
+from scipy.stats import linregress
+
 
 from BellmanFord import BellmanFord
 from BellmanFordOrdre import BellmanFordOrder
@@ -6,7 +8,7 @@ from Dijkstra import Dijkstra
 from TempsBF import TempsBF
 from TempsDij import TempsDij
 from dessinGrapheChemin import *
-from forteConnexité import fc, test_stat_fc
+from forteConnexité import fc, test_stat_fc, seuil
 from generationAleatoire import *
 
 # Matrice
@@ -57,35 +59,35 @@ depart = 0
 M = graphe2(taille, 1, 0, 3)
 print(M)
 
-result = BellmanFord(M, depart, taille - 1)
+resultat = BellmanFord(M, depart, taille - 1)
 
-if isinstance(result, tuple):
-    distance, path = result
+if isinstance(resultat, tuple):
+    distance, path = resultat
     print("Distance totale :", distance)
     print("Chemin le plus court :", path)
 
     orientation = afficherGraphe(M, "4.2 Codage de l'algorithme de Bellman-Ford")
     afficherChemin(M, depart, taille - 1, orientation, "4.2 Codage de l'algorithme de Bellman-Ford")
 else:
-    print(result)
+    print(resultat)
 
 print("\n")
 
 
 # 5 Influence du choix de la liste ordonnée des flèches pour l'algorithme de Bellman-Ford
-def generate_random_matrix(vertices, edge_prob=0.2):
-    M = [[0 if i == j or random.random() > edge_prob else random.randint(-10, 10) for j in range(vertices)] for i in
-         range(vertices)]
+def genereMatrice(points, arrete=0.2):
+    M = [[0 if i == j or random.random() > arrete else random.randint(-10, 10) for j in range(points)] for i in
+         range(points)]
     return M
 
 
-vertices = 50
-M = generate_random_matrix(vertices)
-start, end = 0, vertices - 1
+points = 50
+M = genereMatrice(points)
+debut, fin = 0, points - 1
 
-for order_type in ["arbitraire", "largeur", "longueur"]:
-    result, count = BellmanFordOrder(M, start, end, order_type)
-    print(f"Liste ordonnée : {order_type}, Résultat : {result}, Compteur : {count}")
+for type in ["arbitraire", "largeur", "longueur"]:
+    resultatat, nombre = BellmanFordOrder(M, debut, fin, type)
+    print(f"Liste ordonnée : {type}, Résultat : {resultatat}, Compteur : {nombre}")
 
 print("\n")
 
@@ -105,13 +107,13 @@ temps = round(TempsBF(n, p, a, b), 6)
 print(f"Temps de calcul pour n={n}, p={p}, a={a}, b={b} : TempsBF = {temps} secondes")
 
 # 6.2 Comparaison et identification des deux fonctions temps
-n_values = range(2, 201)
-dijkstra_times = [TempsDij(n, p, a, b) for n in n_values]
-bellman_ford_times = [TempsBF(n, p, a, b) for n in n_values]
+valeurs = range(2, 201)
+tempsDij = [TempsDij(n, p, a, b) for n in valeurs]
+tempsBell = [TempsBF(n, p, a, b) for n in valeurs]
 
 plt.figure(figsize=(10, 6))
-plt.plot(n_values, dijkstra_times, label='Dijkstra', color='blue')
-plt.plot(n_values, bellman_ford_times, label='Bellman-Ford', color='red')
+plt.plot(valeurs, tempsDij, label='Dijkstra', color='blue')
+plt.plot(valeurs, tempsBell, label='Bellman-Ford', color='red')
 plt.xlabel('Nombre de sommets (n)')
 plt.ylabel('Temps de calcul (s)')
 plt.title('Comparaison des temps de calcul : Dijkstra vs Bellman-Ford')
@@ -124,15 +126,50 @@ print("\n")
 # 7 Test de forte connexité
 print("Fortement connexe : ", fc(exemple))
 
-# 8 Forte connexité pour un graphe avec p=50% de flèches
-p = 0.5
-a = 0
-b = 1
-nombreTest = 400
+print("\n")
 
+# 8 Forte connexité pour un graphe avec p=50% de flèches
 for n in range(10, 100, 10):
-    pourcentage = test_stat_fc(n, p, a, b, nombreTest)
+    pourcentage = test_stat_fc(n, 400)
     print(f"Pour n={n}, {pourcentage}% des graphes sont fortement connexes.")
     if pourcentage >= 99:
         print(f"L'affirmation est vraie pour n={n}.")
         break
+
+print("\n")
+
+# 9 Détermination du seuil de forte connexité
+n = 10
+
+p_seuil = seuil(n, 400)
+print(f"Le seuil de forte connexité pour n={n} est p={p_seuil:.4f}")
+
+# 10.1 Représeantation graphique de seuil(n)
+valeurs = range(10, 41)
+seuils = [seuil(n, 20) for n in valeurs]
+
+plt.figure(figsize=(10, 6))
+plt.plot(valeurs, seuils, label='Suite seuil(n)', color='pink')
+plt.xlabel('Taille du graphe (n)')
+plt.ylabel('Seuil')
+plt.title('Seuil de forte connexité en fonction de n')
+plt.legend()
+plt.show()
+
+# 10.2 Identification de la fonction seuil(n)
+log_valeurs = np.log(valeurs)
+log_seuils = np.log(seuils)
+pente, intercepte, valeur_r, valeur_p, err = linregress(log_valeurs, log_seuils)
+
+plt.figure(figsize=(10, 6))
+plt.plot(log_valeurs, log_seuils, marker='o', linestyle='-', color='b', label='Données')
+plt.plot(log_valeurs, pente * log_valeurs + intercepte, color='r', label=f'Régression linéaire (pente={pente:.2f})')
+plt.xlabel('log(n)')
+plt.ylabel('log(p_seuil)')
+plt.title('Log-log du seuil de forte connexité en fonction de n')
+plt.legend()
+plt.show()
+
+a = np.exp(intercepte)
+c = -pente
+print(f"La fonction puissance estimée est p_seuil(n) ≈ {a:.4f} * n^({-c:.4f})")

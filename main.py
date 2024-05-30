@@ -144,7 +144,7 @@ n = 10
 p_seuil = seuil(n, 400)
 print(f"Le seuil de forte connexité pour n={n} est p={p_seuil:.4f}")
 
-# 10.1 Représeantation graphique de seuil(n)
+# 10.1 Représentation graphique de seuil(n)
 valeurs = range(10, 41)
 seuils = [seuil(n, 20) for n in valeurs]
 

@@ -9,7 +9,6 @@ def fermeture_transitive(M):
         for i in range(n):
             for j in range(n):
                 fermeture[i][j] = fermeture[i][j] or (fermeture[i][k] and fermeture[k][j])
-
     return fermeture
 
 
@@ -21,7 +20,6 @@ def fc(M):
         for j in range(n):
             if i != j and fermeture[i][j] == 0:
                 return False
-
     return True
 
 
@@ -32,7 +30,6 @@ def test_stat_fc(n, nombreTest):
         matrice = graphe2(n, 0.5, 0, 1)
         if fc(matrice):
             nombreConnectés += 1
-
     return (nombreConnectés / nombreTest) * 100
 
 
@@ -43,7 +40,6 @@ def test_stat_fc2(n, p, nombreTests):
         matrice = graphe2(n, p, 0, 1)
         if fc(matrice):
             nombreConnectés += 1
-
     return (nombreConnectés / nombreTests) * 100
 
 
@@ -54,10 +50,9 @@ def seuil(n, nombreTests):
 
     while haut - bas > tolerance:
         p = (haut + bas) / 2
-        percentage = test_stat_fc2(n, p, nombreTests)
-        if percentage >= 99:
+        pourcentage = test_stat_fc2(n, p, nombreTests)
+        if pourcentage >= 99:
             haut = p
         else:
             bas = p
-
     return (haut + bas) / 2

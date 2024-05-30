@@ -2,49 +2,49 @@ from collections import deque
 
 
 def ordreArbitraire(M):
-    edges = []
+    arretes = []
     for u in range(len(M)):
         for v in range(len(M)):
             if M[u][v] != 0:
-                edges.append((u, v, M[u][v]))
-    return edges
+                arretes.append((u, v, M[u][v]))
+    return arretes
 
 
-def ordreLargeur(M, start):
-    num_vertices = len(M)
-    visited = [False] * num_vertices
-    queue = deque([start])
-    visited[start] = True
-    bfs_edges = []
+def ordreLargeur(M, debut):
+    nombreSommets = len(M)
+    visite = [False] * nombreSommets
+    queue = deque([debut])
+    visite[debut] = True
+    bfs_arretes = []
 
     while queue:
-        node = queue.popleft()
-        for neighbor in range(num_vertices):
-            if M[node][neighbor] != 0 and not visited[neighbor]:
-                bfs_edges.append((node, neighbor, M[node][neighbor]))
-                queue.append(neighbor)
-                visited[neighbor] = True
+        noeud = queue.popleft()
+        for voisin in range(nombreSommets):
+            if M[noeud][voisin] != 0 and not visite[voisin]:
+                bfs_arretes.append((noeud, voisin, M[noeud][voisin]))
+                queue.append(voisin)
+                visite[voisin] = True
 
-    remaining_edges = [(u, v, M[u][v]) for u in range(num_vertices) for v in range(num_vertices) if
-                       M[u][v] != 0 and (u, v, M[u][v]) not in bfs_edges]
-    return bfs_edges + remaining_edges
+    arretes_restantes = [(u, v, M[u][v]) for u in range(nombreSommets) for v in range(nombreSommets) if
+                         M[u][v] != 0 and (u, v, M[u][v]) not in bfs_arretes]
+    return bfs_arretes + arretes_restantes
 
 
-def ordreProfondeur(M, start):
-    num_vertices = len(M)
-    visited = [False] * num_vertices
-    stack = [start]
-    dfs_edges = []
+def ordreProfondeur(M, debut):
+    nombreSommets = len(M)
+    visite = [False] * nombreSommets
+    pile = [debut]
+    dfs_arretes = []
 
-    while stack:
-        node = stack.pop()
-        if not visited[node]:
-            visited[node] = True
-            for neighbor in range(num_vertices):
-                if M[node][neighbor] != 0 and not visited[neighbor]:
-                    dfs_edges.append((node, neighbor, M[node][neighbor]))
-                    stack.append(neighbor)
+    while pile:
+        noeud = pile.pop()
+        if not visite[noeud]:
+            visite[noeud] = True
+            for voisin in range(nombreSommets):
+                if M[noeud][voisin] != 0 and not visite[voisin]:
+                    dfs_arretes.append((noeud, voisin, M[noeud][voisin]))
+                    pile.append(voisin)
 
-    remaining_edges = [(u, v, M[u][v]) for u in range(num_vertices) for v in range(num_vertices) if
-                       M[u][v] != 0 and (u, v, M[u][v]) not in dfs_edges]
-    return dfs_edges + remaining_edges
+    arretes_restantes = [(u, v, M[u][v]) for u in range(nombreSommets) for v in range(num_vertices) if
+                         M[u][v] != 0 and (u, v, M[u][v]) not in dfs_arretes]
+    return dfs_arretes + arretes_restantes

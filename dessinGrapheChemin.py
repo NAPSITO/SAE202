@@ -3,7 +3,7 @@ import networkx as nx
 import numpy as np
 
 
-def afficherGraphe(matrice, title):
+def afficherGraphe(matrice, titre):
     # Conversion de la matrice en numpy.array
     matrice_np = np.array(matrice)
 
@@ -20,14 +20,14 @@ def afficherGraphe(matrice, title):
     nx.draw(G, pos, with_labels=True)
 
     # Affichage du titre
-    ax.set_title(title)
+    ax.set_title(titre)
 
     plt.show()
 
     return pos
 
 
-def afficherChemin(matrice, depart, destination, orientation, title):
+def afficherChemin(matrice, depart, destination, orientation, titre):
     # Conversion de la matrice en numpy.array
     matrice_np = np.array(matrice)
 
@@ -49,6 +49,6 @@ def afficherChemin(matrice, depart, destination, orientation, title):
     nx.draw_networkx_labels(G, pos, labels=labels, font_size=10)
 
     # Affichage du titre
-    plt.title(title)
+    plt.title(titre)
 
     plt.show(block=False)

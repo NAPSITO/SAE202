@@ -1,42 +1,42 @@
-def BellmanFord(M, start, end):
-    num_vertices = len(M)
+def BellmanFord(M, debut, fin):
+    nombreSommets = len(M)
     # Initialisation des distances
-    distances = [float('inf')] * num_vertices
-    distances[start] = 0
+    distances = [float('inf')] * nombreSommets
+    distances[debut] = 0
 
     # Initialisation des itinéraires
-    predecessors = [-1] * num_vertices
+    predecesseur = [-1] * nombreSommets
 
     # Itération sur chaque nœud pour mettre à jour les distances
-    for _ in range(num_vertices - 1):
-        for node in range(num_vertices):
-            for neighbor in range(num_vertices):
-                if M[node][neighbor] != 0:
-                    if distances[node] + M[node][neighbor] < distances[neighbor]:
-                        distances[neighbor] = distances[node] + M[node][neighbor]
-                        predecessors[neighbor] = node
+    for i in range(nombreSommets - 1):
+        for noeud in range(nombreSommets):
+            for voisin in range(nombreSommets):
+                if M[noeud][voisin] != 0:
+                    if distances[noeud] + M[noeud][voisin] < distances[voisin]:
+                        distances[voisin] = distances[noeud] + M[noeud][voisin]
+                        predecesseur[voisin] = noeud
 
     # Vérification de la présence de cycles négatifs
-    for node in range(num_vertices):
-        for neighbor in range(num_vertices):
-            if M[node][neighbor] != 0:
-                if distances[node] + M[node][neighbor] < distances[neighbor]:
+    for noeud in range(nombreSommets):
+        for voisin in range(nombreSommets):
+            if M[noeud][voisin] != 0:
+                if distances[noeud] + M[noeud][voisin] < distances[voisin]:
                     return ("Sommet joignable depuis {} par un chemin dans le graphe, mais pas de plus court chemin ("
-                            "présence d'un cycle négatif)").format(start)
+                            "présence d'un cycle négatif)").format(debut)
 
     # Vérification de la connectivité du sommet de départ
     if all(distance == float('inf') for distance in distances):
-        return "Sommet non-joignable depuis {} par un chemin dans le graphe".format(start)
+        return "Sommet non-joignable depuis {} par un chemin dans le graphe".format(debut)
 
     # Vérification de la connectivité du sommet d'arrivée
-    if distances[end] == float('inf'):
-        return "Sommet d'arrivée non-joignable depuis {} par un chemin dans le graphe".format(start)
+    if distances[fin] == float('inf'):
+        return "Sommet d'arrivée non-joignable depuis {} par un chemin dans le graphe".format(debut)
 
     # Reconstruction de l'itinéraire
-    path = []
-    current = end
-    while current != -1:
-        path.insert(0, current)
-        current = predecessors[current]
+    chemin = []
+    actuel = fin
+    while actuel != -1:
+        chemin.insert(0, actuel)
+        actuel = predecesseur[actuel]
 
-    return distances[end], path
+    return distances[fin], chemin

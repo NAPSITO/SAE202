@@ -1,43 +1,43 @@
 from choixListeFlèche import ordreArbitraire, ordreProfondeur, ordreLargeur
 
 
-def BellmanFordOrder(M, start, end, order_type="arbitraire"):
-    num_vertices = len(M)
-    distances = [float('inf')] * num_vertices
-    distances[start] = 0
-    predecessors = [-1] * num_vertices
-    count = 0
+def BellmanFordOrder(M, debut, fin, type="arbitraire"):
+    nombreSommets = len(M)
+    distances = [float('inf')] * nombreSommets
+    distances[debut] = 0
+    predecesseurs = [-1] * nombreSommets
+    compteur = 0
 
-    if order_type == "largeur":
-        edges = ordreLargeur(M, start)
-    elif order_type == "longueur":
-        edges = ordreProfondeur(M, start)
+    if type == "largeur":
+        arretes = ordreLargeur(M, debut)
+    elif type == "longueur":
+        arretes = ordreProfondeur(M, debut)
     else:
-        edges = ordreArbitraire(M)
+        arretes = ordreArbitraire(M)
 
-    for _ in range(num_vertices - 1):
-        for u, v, w in edges:
+    for i in range(nombreSommets - 1):
+        for u, v, w in arretes:
             if distances[u] + w < distances[v]:
                 distances[v] = distances[u] + w
-                predecessors[v] = u
-        count += 1
+                predecesseurs[v] = u
+        compteur += 1
 
-    for u, v, w in edges:
+    for u, v, w in arretes:
         if distances[u] + w < distances[v]:
             return (
                 "Sommet joignable depuis {}, mais pas de plus court chemin").format(
-                start), count
+                debut), compteur
 
     if all(distance == float('inf') for distance in distances):
-        return "Sommet non-joignable depuis {}".format(start), count
+        return "Sommet non-joignable depuis {}".format(debut), compteur
 
-    if distances[end] == float('inf'):
-        return "Sommet d'arrivée non-joignable depuis {}".format(start), count
+    if distances[fin] == float('inf'):
+        return "Sommet d'arrivée non-joignable depuis {}".format(debut), compteur
 
-    path = []
-    current = end
-    while current != -1:
-        path.insert(0, current)
-        current = predecessors[current]
+    chemin = []
+    actuel = fin
+    while actuel != -1:
+        chemin.insert(0, actuel)
+        actuel = predecesseurs[actuel]
 
-    return distances[end], path, count
+    return distances[fin], chemin, compteur

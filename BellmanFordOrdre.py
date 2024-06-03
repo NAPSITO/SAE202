@@ -1,7 +1,7 @@
 from choixListeFlèche import ordreArbitraire, ordreProfondeur, ordreLargeur
 
 
-def BellmanFordOrder(M, debut, fin, type="arbitraire"):
+def BellmanFordOrdre(M, debut, fin, type="arbitraire"):
     nombreSommets = len(M)
     distances = [float('inf')] * nombreSommets
     distances[debut] = 0

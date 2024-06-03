@@ -3,7 +3,7 @@ from scipy.stats import linregress
 
 
 from BellmanFord import BellmanFord
-from BellmanFordOrdre import BellmanFordOrder
+from BellmanFordOrdre import BellmanFordOrdre
 from Dijkstra import Dijkstra
 from TempsBF import TempsBF
 from TempsDij import TempsDij
@@ -86,8 +86,8 @@ M = genereMatrice(points)
 debut, fin = 0, points - 1
 
 for type in ["arbitraire", "largeur", "longueur"]:
-    resultatat, nombre = BellmanFordOrder(M, debut, fin, type)
-    print(f"Liste ordonnée : {type}, Résultat : {resultatat}, Compteur : {nombre}")
+    resultat, nombre = BellmanFordOrdre(M, debut, fin, type)
+    print(f"Liste ordonnée : {type}, Résultat : {resultat}, Compteur : {nombre}")
 
 print("\n")
 

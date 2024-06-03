@@ -45,6 +45,6 @@ def ordreProfondeur(M, debut):
                     dfs_arretes.append((noeud, voisin, M[noeud][voisin]))
                     pile.append(voisin)
 
-    arretes_restantes = [(u, v, M[u][v]) for u in range(nombreSommets) for v in range(num_vertices) if
+    arretes_restantes = [(u, v, M[u][v]) for u in range(nombreSommets) for v in range(nombreSommets) if
                          M[u][v] != 0 and (u, v, M[u][v]) not in dfs_arretes]
     return dfs_arretes + arretes_restantes

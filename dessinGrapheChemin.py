@@ -3,12 +3,14 @@ import networkx as nx
 import numpy as np
 
 
-def afficherGraphe(matrice, titre):
-    # Conversion de la matrice en numpy.array
-    matrice_np = np.array(matrice)
+def afficherGraphe(matrice_np, titre, chemin=None):
+    n = matrice_np.shape[0]
+    G = nx.DiGraph()
 
-    # Création du graphe à partir de la matrice
-    G = nx.from_numpy_array(matrice_np)
+    for i in range(n):
+        for j in range(n):
+            if matrice_np[i, j] != float('inf') and matrice_np[i, j] != 0:
+                G.add_edge(i, j, weight=matrice_np[i, j])
 
     # Orientation du graphe
     pos = nx.spring_layout(G)
@@ -16,8 +18,12 @@ def afficherGraphe(matrice, titre):
     # Création d'une figure
     fig, ax = plt.subplots()
 
+    nx.draw(G, pos, with_labels=True, node_color='skyblue', node_size=800, font_size=12)
+
     # Visualisation du graphe
     nx.draw(G, pos, with_labels=True)
+    if chemin:
+        afficherChemin(G, pos, chemin, titre)
 
     # Affichage du titre
     ax.set_title(titre)
@@ -27,26 +33,9 @@ def afficherGraphe(matrice, titre):
     return pos
 
 
-def afficherChemin(matrice, depart, destination, orientation, titre):
-    # Conversion de la matrice en numpy.array
-    matrice_np = np.array(matrice)
-
-    # Création du graphe à partir de la matrice
-    G = nx.from_numpy_array(matrice_np)
-
-    # Définition du chemin entre deux nœuds spécifiques
-    chemin = nx.shortest_path(G, source=depart, target=destination)
-
-    # Orientation du graphe
-    pos = orientation
-
-    # Visualisation du chemin
-    nx.draw_networkx_nodes(G, pos, nodelist=chemin, node_color='r')
-    nx.draw_networkx_edges(G, pos)
-
-    # Ajout des labels
-    labels = {node: node for node in chemin}
-    nx.draw_networkx_labels(G, pos, labels=labels, font_size=10)
+def afficherChemin(matrice_np, orientation, chemin, titre):
+    arretes = [(chemin[i], chemin[i + 1]) for i in range(len(chemin) - 1)]
+    nx.draw_networkx_edges(matrice_np, orientation, edgelist=arretes, edge_color='red', width=2)
 
     # Affichage du titre
     plt.title(titre)

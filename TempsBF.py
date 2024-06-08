@@ -1,5 +1,4 @@
 import time
-
 import networkx as nx
 
 from generationAleatoire import graphe2

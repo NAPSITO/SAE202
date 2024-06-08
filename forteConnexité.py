@@ -37,22 +37,19 @@ def test_stat_fc2(n, p, nombreTests):
     nombreConnectés = 0
 
     for i in range(nombreTests):
-        matrice = graphe2(n, p, 0, 1)
+        matrice = graphe2(n, p, 1, 10)
         if fc(matrice):
             nombreConnectés += 1
     return (nombreConnectés / nombreTests) * 100
 
 
-def seuil(n, nombreTests):
-    bas = 0
-    haut = 1
-    tolerance = 0.01
+def  seuil(n):
+    tolerance = 0
+    p = 1.0
 
-    while haut - bas > tolerance:
-        p = (haut + bas) / 2
-        pourcentage = test_stat_fc2(n, p, nombreTests)
-        if pourcentage >= 99:
-            haut = p
-        else:
-            bas = p
-    return (haut + bas) / 2
+    while p > tolerance:
+        proportion_connexe = test_stat_fc2(n, p, nombreTests=20)
+        if proportion_connexe < 99:
+            break
+        p -= 0.1
+    return p + 0.1

@@ -6,7 +6,6 @@ from BellmanFordOrdre import BellmanFordOrder
 from Dijkstra import Dijkstra
 from TempsBF import TempsBF
 from TempsDij import TempsDij
-from choixListeFlèche import ordreLargeur, ordreProfondeur
 from dessinGrapheChemin import *
 from forteConnexité import fc, test_stat_fc, seuil
 from generationAleatoire import *
@@ -157,24 +156,25 @@ print("\n")
 print("9 Détermination du seuil de forte connexité")
 n = 10
 
-p_seuil = seuil(n)
-print(f"Le seuil de forte connexité pour n={n} est p={p_seuil}")
+p_seuil = seuil(n, 20)
+print(f"Le seuil de forte connexité pour n={n} est p={p_seuil:.4f}")
 
 # 10.1 Représentation graphique de seuil(n)
 values = range(10, 41)
-seuil_values = [seuil(n) for n in values]
+seuils = [seuil(n, 20) for n in valeurs]
 
 # Tracer les valeurs
-plt.plot(valeurs, seuil_values, marker='o')
-plt.xlabel('Taille de la matrice (n)')
-plt.ylabel('Seuil de forte connexité')
-plt.title('Représentation de seuil')
-plt.grid(True)
+plt.figure(figsize=(10, 6))
+plt.plot(valeurs, seuils, label='Suite seuil(n)', color='pink')
+plt.xlabel('Taille du graphe (n)')
+plt.ylabel('Seuil')
+plt.title('Seuil de forte connexité en fonction de n')
+plt.legend()
 plt.show()
 
 # 10.2 Identification de la fonction seuil(n)
 log_valeurs = np.log(valeurs)
-log_seuils = np.log(seuil_values)
+log_seuils = np.log(seuils)
 pente, intercepte, valeur_r, valeur_p, err = linregress(log_valeurs, log_seuils)
 
 plt.figure(figsize=(10, 6))

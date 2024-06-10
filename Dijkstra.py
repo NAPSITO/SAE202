@@ -1,37 +1,32 @@
 import numpy as np
 
 
-def Dijkstra(M, origine, cible):
+def Dijkstra(M, origine):
     # Initialisation des dictionnaires
-    taille_graphe = len(M)
-    dist = [np.inf] * taille_graphe
-    pred = [None] * taille_graphe
+    n = M.shape[0]
+    dist = {}
+    pred = {}
+    distR = {}
+
+    for sommet in range(n):
+        if M[origine, sommet] == 0:
+            dist[sommet] = float('inf')
+        else:
+            dist[sommet] = M[origine, sommet]
+        pred[sommet] = None
+        distR[sommet] = True
 
     dist[origine] = 0
-    visite = [origine]
-    actuel = origine
 
-    while cible not in visite:
-        distance_min = np.inf
-        for i in range(taille_graphe):
-            if i not in visite and dist[i] < distance_min:
-                distance_min = dist[i]
-                actuel = i
+    while distR:
+        sommet_pp = min(distR, key=dist.get)
+        del distR[sommet_pp]
 
-        visite.append(actuel)
+        for sommet in range(n):
+            if M[sommet_pp, sommet] != 0 and distR.get(sommet):
+                nouvelle_distance = dist[sommet_pp] + M[sommet_pp, sommet]
+                if nouvelle_distance <= dist[sommet]:
+                    dist[sommet] = nouvelle_distance
+                    pred[sommet] = sommet_pp
 
-        for j in range(taille_graphe):
-            if j not in visite and M[actuel][j] != np.inf:
-                if dist[actuel] + M[actuel][j] < dist[j]:
-                    dist[j] = dist[actuel] + M[actuel][j]
-                    pred[j] = actuel
-
-    nouvelle_cible = cible
-    chemin = [nouvelle_cible]
-    while pred[nouvelle_cible] is not None:
-        chemin.append(pred[nouvelle_cible])
-        nouvelle_cible = pred[nouvelle_cible]
-
-    chemin.reverse()
-
-    return dist[-1], chemin
+    return dist, pred

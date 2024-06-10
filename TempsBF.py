@@ -1,5 +1,4 @@
 import time
-
 import networkx as nx
 
 from generationAleatoire import graphe2
@@ -20,4 +19,4 @@ def TempsBF(n, p, a, b):
     # Calculer le temps de calcul utilisé
     temps = tempsFin - tempsDebut
 
-    return temps
+    return max(temps, 1e-10)
